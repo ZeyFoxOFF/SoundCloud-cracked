@@ -42,7 +42,7 @@
 ## 📊 Statistiques
 ```
 📥 +1000 Téléchargements
-⭐ +100 Stars
+⭐ +3 Stars
 🔄 Mis à jour régulièrement
 ```
 
@@ -115,7 +115,7 @@
 ## 📊 Statistics
 ```
 📥 +1000 Downloads
-⭐ +100 Stars
+⭐ +3 Stars
 🔄 Updated regularly
 ```
 
