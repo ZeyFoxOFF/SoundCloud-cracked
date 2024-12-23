@@ -78,7 +78,7 @@
 ## 📥 Installation
 
 ### Méthode 1: Téléchargement direct
-1. Cliquez sur [ce lien](https://github.com/ArizakiDev/SoundCloud-cracked/releases/download/1.0/soundcloud.By.Arizaki.exe)
+1. Cliquez sur [ce lien](https://github.com/ArizakiDev/SoundCloud-cracked/releases/download/latest/soundcloud.By.Arizaki.exe)
 2. Lancez l'installation
 3. Profitez de l'application ! 🎉
 
