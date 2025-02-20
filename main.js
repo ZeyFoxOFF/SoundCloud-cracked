@@ -1,5 +1,8 @@
 const { app, BrowserWindow, Menu, shell } = require('electron');
 const DiscordRPC = require('discord-rpc');
+const fs = require('fs');
+const path = require('path');
+
 const rpc = new DiscordRPC.Client({ transport: 'ipc' });
 const clientId = '1090770350251458592';
 
@@ -20,7 +23,7 @@ async function createWindow() {
   mainWindow = new BrowserWindow({
     width: 1280,
     height: 720,
-    icon: __dirname + 'soundcloud.ico',
+    icon: 'soundcloud.ico',
     webPreferences: {
       nodeIntegration: false
     }
@@ -28,6 +31,19 @@ async function createWindow() {
   mainWindow.maximize();
   mainWindow.loadURL('https://soundcloud.com/');
   mainWindow.webContents.openDevTools();
+
+  // CSS Dark
+  const cssPath = path.join(__dirname, 'dark.css');
+  const customCSS = fs.readFileSync(cssPath, 'utf8');
+
+  mainWindow.webContents.on('did-frame-finish-load', () => {
+    mainWindow.webContents.insertCSS(customCSS).then(() => {
+      console.log('CSS injected ');
+    }).catch(err => {
+      console.error('CSS injection error:', err);
+    });
+  });
+
   mainWindow.webContents.session.webRequest.onBeforeRequest({ urls: ["*://*/*"] }, (details, callback) => {
     const adPatterns = [
       /.*ads.*/,
@@ -48,14 +64,14 @@ async function createWindow() {
       /.*banners.*/,
       /.*promotions.*/
     ];
-    
+
     if (adPatterns.some(pattern => pattern.test(details.url))) {
       callback({ cancel: true });
     } else {
       callback({ cancel: false });
     }
   });
-
+  mainWindow.webContents.closeDevTools();
   setInterval(async () => {
     const isPlaying = await mainWindow.webContents.executeJavaScript(
       `document.querySelector('.playControls__play').classList.contains('playing')`
@@ -64,7 +80,7 @@ async function createWindow() {
     if (isPlaying) {
       const trackInfo = await mainWindow.webContents.executeJavaScript(`
         new Promise(resolve => {
-          const titleEl = document.querySelector('.playbackSoundBadge__titleLink');
+          const titleEl = document.querySelector('.playbackSoundBadge__titleLink span:nth-child(2)');
           const authorEl = document.querySelector('.playbackSoundBadge__lightLink');
           if (titleEl && authorEl) {
             resolve({title: titleEl.innerText, author: authorEl.innerText});
@@ -87,8 +103,8 @@ async function createWindow() {
       `);
 
       rpc.setActivity({
-        details: shortenString(trackInfo.title.replace(/\n.*/s, '').replace("Current track:", "")),
-        state: `Par ${shortenString(trackInfo.author)}`,
+        details: shortenString(trackInfo.title),
+        state: `${shortenString(trackInfo.author)}`,
         largeImageKey: artworkUrl.replace("50x50.", "500x500."),
         largeImageText: 'by Arizaki',
         smallImageKey: 'soundcloud-logo',
