@@ -54,6 +54,14 @@
     <th>État</th>
     <th>Modifications</th>
   </tr>
+    <tr>
+    <td>1.2.1</td>
+    <td>⚠️</td>
+    <td>
+      • Ajout: Version Android<br>
+      • à corriger: Page de connexion<br>
+    </td>
+  </tr>
   <tr>
     <td>1.2</td>
     <td>✅</td>
@@ -126,6 +134,13 @@
     <th>Version</th>
     <th>Status</th>
     <th>Changes</th>
+  </tr>
+  <tr>
+    <td>1.2.1</td>
+    <td>⚠️</td>
+    <td>
+      • add: Android Version<br>
+    </td>
   </tr>
   <tr>
     <td>1.2</td>
