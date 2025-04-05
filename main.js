@@ -33,7 +33,7 @@ async function createWindow() {
   mainWindow.webContents.openDevTools();
 
   // CSS Dark
-  const cssPath = path.join(__dirname, 'dark.css');
+  const cssPath = path.join(__dirname, 'custom.css');
   const customCSS = fs.readFileSync(cssPath, 'utf8');
 
   mainWindow.webContents.on('did-frame-finish-load', () => {
