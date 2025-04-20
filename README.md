@@ -4,7 +4,7 @@
 
 <img src="https://imgur.com/LORLuzf.png" alt="Bannière de l'application" width="300"/>
 
-[![Version](https://img.shields.io/badge/version-1.2-blue.svg?style=for-the-badge)](https://github.com/ArizakiDev/SoundCloud-cracked/releases)
+[![Version](https://img.shields.io/badge/version-1.3-blue.svg?style=for-the-badge)](https://github.com/ArizakiDev/SoundCloud-cracked/releases)
 [![License](https://img.shields.io/badge/license-MIT-green.svg?style=for-the-badge)](LICENSE)
 [![Made by Arizaki](https://img.shields.io/badge/Made%20by-Arizaki-purple.svg?style=for-the-badge)](https://github.com/ArizakiDev)
 [![Downloads](https://img.shields.io/badge/downloads-1K%2B-orange.svg?style=for-the-badge)](https://github.com/ArizakiDev/SoundCloud-cracked/releases)
@@ -42,7 +42,7 @@
 ## 📊 Statistiques
 ```
 📥 +1000 Téléchargements
-⭐ +3 Stars
+⭐ +11 Stars
 🔄 Mis à jour régulièrement
 ```
 
@@ -53,6 +53,15 @@
     <th>Version</th>
     <th>État</th>
     <th>Modifications</th>
+  </tr>
+    <tr>
+    <td>1.3</td>
+    <td>✅</td>
+    <td>
+      • Ajout: Minuterie<br>
+      • Amélioration: Discord rpc<br>
+      • D'autres ajouts.. <br>
+    </td>
   </tr>
     <tr>
     <td>1.2.1</td>
@@ -123,7 +132,7 @@
 ## 📊 Statistics
 ```
 📥 +1000 Downloads
-⭐ +3 Stars
+⭐ +11 Stars
 🔄 Updated regularly
 ```
 
@@ -134,6 +143,15 @@
     <th>Version</th>
     <th>Status</th>
     <th>Changes</th>
+  </tr>
+    <tr>
+    <td>1.3</td>
+    <td>✅</td>
+    <td>
+      • add: sleep timer<br>
+      • upgrade: discord rpc<br>
+      • More add <br>
+    </td>
   </tr>
   <tr>
     <td>1.2.1</td>
