@@ -1,30 +1,46 @@
 {
-  "name": "Ads block for soundcloud",
-  "productName": "Ads block for soundcloud",
-  "description": "My Electron application description",
+  "name": "soundcloud_v1.3",
+  "productName": "soundcloud_v1.3",
+  "description": "SoundCloud avec fonctionnalités avancées",
   "keywords": [],
   "main": "./main.js",
-  "version": "1.0.0",
+  "version": "1.3.0",
   "author": "Arizaki",
   "scripts": {
-    "start": "electron-forge start",
-    "package": "electron-forge package",
-    "make": "electron-forge make",
-    "publish": "electron-forge publish",
-    "lint": "echo \"No linting configured\""
+    "start": "electron .",
+    "build": "electron-builder",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder"
   },
   "dependencies": {
     "discord-rpc": "4.0.1",
-    "electron-packager": "17.1.1"
+    "electron-squirrel-startup": "^1.0.1",
+    "fs": "0.0.1-security",
+    "node-html-parser": "^7.0.1",
+    "path": "0.12.7"
   },
   "devDependencies": {
     "electron": "23.2.0",
-    "@electron-forge/cli": "6.4.1",
-    "@electron-forge/maker-deb": "6.4.1",
-    "@electron-forge/maker-rpm": "6.4.1",
-    "@electron-forge/maker-squirrel": "6.4.1",
-    "@electron-forge/maker-zip": "6.4.1"
+    "electron-builder": "^26.0.12"
   },
-  "config": {},
-  "license": "MIT"
+  "build": {
+    "appId": "com.arizaki.soundcloud",
+    "productName": "SoundCloud v1.3",
+    "copyright": "Copyright © 2025 Arizaki",
+    "icon": "soundcloud.ico",
+    "win": {
+      "icon": "soundcloud.ico",
+      "target": ["nsis"],
+      "artifactName": "SoundCloud-v1.3-setup-${version}.${ext}"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "installerIcon": "soundcloud.ico",
+      "uninstallerIcon": "soundcloud.ico",
+      "installerHeaderIcon": "soundcloud.ico",
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true
+    }
+  }
 }
