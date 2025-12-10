@@ -12,8 +12,6 @@ const { app, BrowserWindow, Menu, shell, dialog, ipcMain } = require('electron')
 const DiscordRPC = require('discord-rpc');
 const fs = require('fs');
 const path = require('path');
-
-const rpc = new DiscordRPC.Client({ transport: 'ipc' });
 const https = require('https');
 const http = require('http');
 const clientId = '1090770350251458592';
@@ -543,7 +541,7 @@ async function updateDiscordRPC() {
           const playButton = document.querySelector('.playControls__play');
           const isPlaying = playButton && playButton.classList.contains('playing');
           
-          const titleEl = document.querySelector('.playbackSoundBadge__titleLink');
+          const titleEl = document.querySelector('.playbackSoundBadge__titleLink span:nth-child(2)');
           const artistEl = document.querySelector('.playbackSoundBadge__lightLink');
           const artworkEl = document.querySelector('.playbackSoundBadge__avatar .image__lightOutline span');
           
@@ -680,7 +678,6 @@ async function createWindow() {
   mainWindow = new BrowserWindow({
     width: 1280,
     height: 720,
-    icon: 'soundcloud.ico',
     icon: path.join(__dirname, 'soundcloud.ico'),
     webPreferences: {
       nodeIntegration: true,
@@ -693,12 +690,11 @@ async function createWindow() {
   
   mainWindow.maximize();
   mainWindow.loadURL('https://soundcloud.com/');
-  mainWindow.webContents.openDevTools();
+    
 
-  // CSS Custom
+  // remove visual ads
   const cssPath = path.join(__dirname, 'custom.css');
   const customCSS = fs.readFileSync(cssPath, 'utf8');
-
   mainWindow.webContents.on('did-frame-finish-load', () => {
     mainWindow.webContents.insertCSS(customCSS).then(() => {
       console.log('CSS injected ');
@@ -707,6 +703,7 @@ async function createWindow() {
     });
   });
 
+  
   mainWindow.webContents.session.webRequest.onBeforeRequest({ urls: ["*://*/*"] }, (details, callback) => {
     const adPatterns = [
       /.*ads.*/,
@@ -727,67 +724,24 @@ async function createWindow() {
       /.*banners.*/,
       /.*promotions.*/
     ];
-
-    if (adPatterns.some(pattern => pattern.test(details.url))) {
-      callback({ cancel: true });
-    } else {
-      callback({ cancel: false });
-    }
+    
+    const url = details.url.toLowerCase();
+    const shouldBlock = adPatterns.some(pattern => pattern.test(url));
+    
+    callback({ cancel: shouldBlock });
   });
-  mainWindow.webContents.closeDevTools();
-  setInterval(async () => {
-    const isPlaying = await mainWindow.webContents.executeJavaScript(
-      `document.querySelector('.playControls__play').classList.contains('playing')`
-    );
 
-    if (isPlaying) {
-      const trackInfo = await mainWindow.webContents.executeJavaScript(`
-        new Promise(resolve => {
-          const titleEl = document.querySelector('.playbackSoundBadge__titleLink span:nth-child(2)');
-          const authorEl = document.querySelector('.playbackSoundBadge__lightLink');
-          if (titleEl && authorEl) {
-            resolve({title: titleEl.innerText, author: authorEl.innerText});
-          } else {
-            resolve({title: '', author: ''});
-          }
-        });
-      `);
+  mainWindow.webContents.on('did-finish-load', async () => {
+    mainWindow.setTitle(texts.app_title);
+    
+    await injectCustomFeatures();
+    
+    setInterval(updateDiscordRPC, rpcUpdateInterval);
+  });
 
-      const artworkUrl = await mainWindow.webContents.executeJavaScript(`
-        new Promise(resolve => {
-          const artworkEl = document.querySelector('.playbackSoundBadge__avatar .image__lightOutline span');
-          if (artworkEl) {
-            const url = artworkEl.style.backgroundImage.replace('url("', '').replace('")', '');
-            resolve(url);
-          } else {
-            resolve('');
-          }
-        });
-      `);
-
-      rpc.setActivity({
-        details: shortenString(trackInfo.title),
-        state: `${shortenString(trackInfo.author)}`,
-        largeImageKey: artworkUrl.replace("50x50.", "500x500."),
-        largeImageText: 'by Arizaki',
-        smallImageKey: 'soundcloud-logo',
-        smallImageText: 'Soundcloud',
-        instance: false,
-      });
-    } else {
-      if (displayWhenIdling) {
-        rpc.setActivity({
-          details: 'écoute sur Soundcloud',
-          state: 'En pause',
-          largeImageKey: 'idling',
-          largeImageText: 'by Arizaki',
-          smallImageKey: 'soundcloud-logo',
-          smallImageText: '',
-          instance: false,
-        });
-      }
-    }
-  }, 1000);
+  mainWindow.webContents.on('did-navigate', () => {
+    if (global.gc) global.gc();
+  });
 
   mainWindow.on('closed', function () {
     if (checkForRPC) clearInterval(checkForRPC);
